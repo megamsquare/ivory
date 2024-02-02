@@ -39,6 +39,9 @@ docker-compose up -d
 - You can Run tests using the following command:
 
 ```bash
+# install npm first
+npm install
+
 # unit tests
 $ npm run test
 ```
