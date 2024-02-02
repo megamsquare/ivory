@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+  restaurant-db:
+    container_name: restaurant-db
+    image: postgis/postgis:15-3.3
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DATABASE=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  restaurant-api:
+    container_name:  restaurant-api
+    build: .
+    depends_on:
+      - restaurant-db
+    links:
+      - restaurant-db:restaurant-db
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+    ports:
+      - 3000:3000
+
+volumes:
+  pgdata: {}
